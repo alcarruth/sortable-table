@@ -1,1 +1,7 @@
-package_root="/usr/local/server/git/repos/www/deep"
+#!/bin/sh
+package_root="/usr/local/server/git/clones/sortable-table"
+lib_dir="/usr/local/server/git/clones/sortable-table/lib"
+src_dir="/usr/local/server/git/clones/sortable-table/src"
+bin_dir="/usr/local/server/git/clones/sortable-table/bin"
+build_dir="/usr/local/server/git/clones/sortable-table/build"
+

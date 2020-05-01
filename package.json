@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "clean": "bin/clean",
-    "install": "bin/install",
+    "install": "bin/install && bin/build",
     "build": "bin/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "/usr/local/server/git/repos/sortable-table"
+    "url": "/usr/local/server/git/repos/sortable-table/"
   },
   "keywords": [
     "javascript",
@@ -22,8 +22,10 @@
   "author": "Al Carruth",
   "license": "ISC",
   "dependencies": {
-    "coffeescript": "^2.4.1",
-    "deep": "/opt/git/deep"
+    "deep": "git+ssh://goofi.armazilla.net/opt/git/deep"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "browserify": "^16.5.1",
+    "coffeescript": "^2.4.1"
+  }
 }

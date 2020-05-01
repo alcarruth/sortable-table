@@ -1,12 +1,10 @@
 #!/usr/bin/env coffee
 #
 
+deep = require('deep')
 
 if window?
-  deep = window.deep
-
-else
-  deep = require('deep')
+  document = window.document
 
 normal_sort = (spec) ->
   {column, direction} = spec
@@ -21,21 +19,26 @@ class Sortable_Table
 
   constructor: (data, @columns) ->
     @data = deep.copy(data)
-    @elt = document.create('table')
+    @elt = document.createElement('table')
     @elt.setAttribute('id', @id)
     @elt.setAttribute('class', 'sortable-table')
-    @thead = new Table_Header(@table)
-    @tbody = new Table_Body(@table)
+    @thead = new Sortable_Table_Header(this)
+    @tbody = new Sortable_Table_Body(this)
     @elt.appendChild(@thead.elt)
     @elt.appendChild(@tbody.elt)
+    @defaults = {}
+    for column in @columns
+      @defaults[column.key] = column.sort_order
     @current_sort =
       column: null
       direction: null
 
   sort_data: (spec) =>
-    console.log("sort_data(#{spec})")
     data = await @data
     data.sort(normal_sort(spec))
+    rank = 1
+    for row in data
+      row.rank = rank++
     @current_sort = spec
     @update()
 
@@ -48,9 +51,10 @@ class Sortable_Table
     @highlight(@current_sort.column)
 
   highlight: (key) =>
+    className = key.replace(/_/g, '-')
     for th in @thead.elt.getElementsByClassName('column-heading')
       th.classList.remove('highlight')
-    for td in @tbody.elt.getElementsByClassName(key)
+    for td in @elt.getElementsByClassName(className)
       td.classList.add('highlight')
 
   add_column: (key, spec) =>
@@ -58,15 +62,17 @@ class Sortable_Table
     @columns[key] = spec
 
   handle_click: (column) =>
-    if @table.current_sort.column == column
-      if @table.current_sort.direction == 'ascending'
-        direction = 'descending'
+    defalt_order = @defaults[column]
+    if defalt_order != 'none'
+      if @current_sort.column == column
+        if @current_sort.direction == 'ascending'
+          direction = 'descending'
+        else
+          direction = 'ascending'
       else
-        direction = 'ascending'
-    else
-      direction = @defaults[column].sort_order
-    @table.sort_data({column, direction})
-    
+        direction = defalt_order
+      @sort_data({column, direction})
+
 
 class Sortable_Table_Header
 
@@ -75,15 +81,18 @@ class Sortable_Table_Header
     @elt.setAttribute('class', 'sortable-table-header')
     @tr = document.createElement('tr')
     @elt.setAttribute('id', 'table-header')
-    for key, spec of @table.columns
+    for column in @table.columns
       th = document.createElement('th')
-      classes = spec.classes.concat(['column-heading'])
+      classes = column.classes.concat(['column-heading'])
       th.setAttribute('class', classes.join(' '))
-      th.innerText = spec.heading_text
-      th.onclick = => @table.controller.handle_click(key)
-      th.onmouseover = => th.classList.add('mouseover')
-      th.onmouseout = => th.classList.remove('mouseover')
+      th.innerText = column.heading_text
+      th.onclick = ((key)=> => @table.handle_click(key))(column.key)
+      if column.key != 'rank'
+        th.onmouseover = ((th)-> -> th.classList.add('mouseover'))(th)
+        th.onmouseout = ((th)-> -> th.classList.remove('mouseover'))(th)
       @tr.appendChild(th)
+    @elt.appendChild(@tr)
+
 
 class Sortable_Table_Body
 
@@ -96,15 +105,11 @@ class Sortable_Table_Body
       for spec in @table.columns
         td = document.createElement('td')
         classes = spec.classes.concat(['column-data'])
-        td.addAttribute('class', spec.classes.join(' '))
+        td.setAttribute('class', spec.classes.join(' '))
         td.innerText = obj[spec.key]
         tr.appendChild(td)
       @elt.appendChild(tr)
 
 
-if window?
-  window.Sortable_Table = Sortable_Table
-
-else
-  exports.Sortable_Table = Sortable_Table
+exports.Sortable_Table = Sortable_Table
   
