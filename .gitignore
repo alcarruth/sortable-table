@@ -1,10 +1,5 @@
 *~
-__pycache__/
-*.pyc
 node_modules/
 build/
-browser/
 lib/*.js
-bin/buildrc
-bin/settings.coffee
 
