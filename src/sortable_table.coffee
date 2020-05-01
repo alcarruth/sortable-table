@@ -3,8 +3,10 @@
 
 deep = require('deep')
 
+console.log("sortable_table: document: #{document}")
 if window?
   document = window.document
+console.log("sortable_table: document: #{document}")
 
 normal_sort = (spec) ->
   {column, direction} = spec
@@ -34,6 +36,7 @@ class Sortable_Table
       direction: null
 
   sort_data: (spec) =>
+    console.log("sort_data(#{spec})")
     data = await @data
     data.sort(normal_sort(spec))
     rank = 1
@@ -86,12 +89,22 @@ class Sortable_Table_Header
       classes = column.classes.concat(['column-heading'])
       th.setAttribute('class', classes.join(' '))
       th.innerText = column.heading_text
-      th.onclick = ((key)=> => @table.handle_click(key))(column.key)
+      th.onclick = @handle_click(column.key)
       if column.key != 'rank'
-        th.onmouseover = ((th)-> -> th.classList.add('mouseover'))(th)
-        th.onmouseout = ((th)-> -> th.classList.remove('mouseover'))(th)
+        th.onmouseover = @handle_mouseover(th)
+        th.onmouseout = @handle_mouseout(th)
       @tr.appendChild(th)
     @elt.appendChild(@tr)
+
+  handle_mouseover: (th) ->
+    -> th.classList.add('mouseover')
+      
+  handle_mouseout: (th) ->
+    -> th.classList.remove('mouseover')
+      
+  handle_click: (key) =>
+    => @table.handle_click(key)
+
 
 
 class Sortable_Table_Body
