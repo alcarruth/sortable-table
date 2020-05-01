@@ -1,7 +1,8 @@
 {
   "name": "sortable-table",
   "version": "1.0.0",
-  "description": "table sort ",
+  "branch": "stable",
+  "description": "Easily create html tables with clickable column headers to sort the rows.",
   "main": "index.js",
   "scripts": {
     "clean": "bin/clean",
@@ -11,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "/usr/local/server/git/repos/sortable-table/"
+    "url": "git@github.com:alcarruth/sortable-table.git#stable"
   },
   "keywords": [
     "javascript",
