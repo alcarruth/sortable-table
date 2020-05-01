@@ -2,4 +2,6 @@
 node_modules/
 build/
 lib/*.js
+bin/buildrc
+bin/settings.coffee
 
