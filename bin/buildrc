@@ -1,7 +1,0 @@
-#!/bin/sh
-package_root="/usr/local/server/git/repos/sortable-table"
-lib_dir="/usr/local/server/git/repos/sortable-table/lib"
-src_dir="/usr/local/server/git/repos/sortable-table/src"
-bin_dir="/usr/local/server/git/repos/sortable-table/bin"
-build_dir="/usr/local/server/git/repos/sortable-table/build"
-
