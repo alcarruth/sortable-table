@@ -1,0 +1,20 @@
+{
+  "name": "armazilla_net_cuatro",
+  "description": "Armazilla Networks website",
+  "scripts": {
+  },
+  "repository": {
+    "url": "/usr/local/server/git/repos/www/armazilla_net_cuatro/"
+  },
+  "keywords": [
+    "Armazilla",
+    "Networks",
+    "website"
+  ],
+  "author": "Al Carruth",
+  "license": "MIT",
+  "dependencies": {
+    "prismjs": "^1.17.1",
+    "spectrum-colorpicker": "^1.8.0"
+  }
+}

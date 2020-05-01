@@ -1,0 +1,50 @@
+#!/usr/bin/env coffee
+#
+
+fs = require('fs')
+process = require('process')
+
+# This assumes that this script is invoked from
+# the package root, which it is when called with
+# npm install.
+# 
+package_root = process.cwd()
+
+# another way to get it:
+# coffee_pkg_json = require('./node_modules/coffeescript/package.json')
+# package_root = coffee_pkg_json._where
+
+# dirs relative to package root
+# 
+lib_dir="#{package_root}/lib"
+src_dir="#{package_root}/src"
+bin_dir="#{package_root}/bin"
+build_dir="#{package_root}/build"
+
+# export these to a shell script for sourcing
+# by shell build scripts.
+# 
+fs.writeFileSync 'bin/buildrc',  """
+#!/bin/sh
+package_root="#{package_root}"
+lib_dir="#{lib_dir}"
+src_dir="#{src_dir}"
+bin_dir="#{bin_dir}"
+build_dir="#{build_dir}"
+\n"""
+
+# export these to a coffee script for sourcing
+# by coffee build scripts.
+# 
+fs.writeFileSync 'bin/settings.coffee', """
+#!/usr/bin/env coffee
+module.exports = {
+  package_root: "#{package_root}"
+  lib_dir: "#{lib_dir}"
+  src_dir: "#{src_dir}"
+  bin_dir: "#{bin_dir}"
+  build_dir: "#{build_dir}"
+  }
+\n"""
+
+
