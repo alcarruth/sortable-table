@@ -14,7 +14,11 @@ normal_sort = (spec) ->
     return -1 if a[column] > b[column] 
     return 0 
 
-
+number_sort = (spec) ->
+  sort = normal_sort(spec)
+  (a,b) ->
+    sort(Number(a),Number(b))
+  
 class Sortable_Table
 
   constructor: (data, @columns) ->
@@ -35,7 +39,7 @@ class Sortable_Table
 
   sort_data: (spec) =>
     data = await @data
-    data.sort(normal_sort(spec))
+    data.sort(number_sort(spec))
     rank = 1
     for row in data
       row.rank = rank++
