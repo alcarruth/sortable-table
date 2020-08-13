@@ -37,7 +37,13 @@ class Sortable_Table
       column: null
       direction: null
 
+
+  # method @sort_data({ column, direction })
+  # column: the column to sort
+  # direction: either 'ascending' or 'descending'
+  # 
   sort_data: (spec) =>
+    console.log("sort_data(#{spec})")
     data = await @data
     data.sort(number_sort(spec))
     rank = 1
@@ -46,7 +52,10 @@ class Sortable_Table
     @current_sort = spec
     @update()
 
+
+  # method @update()
   # creates and installs new table element
+  # 
   update: =>
     # create new <tbody> element from current data
     tbody = new Sortable_Table_Body(this)
@@ -54,6 +63,10 @@ class Sortable_Table
     @tbody = tbody
     @highlight(@current_sort.column)
 
+
+  # method @highlight()
+  # arg: key : column key
+  # 
   highlight: (key) =>
     className = key.replace(/_/g, '-')
     for th in @thead.elt.getElementsByClassName('column-heading')
@@ -61,10 +74,16 @@ class Sortable_Table
     for td in @elt.getElementsByClassName(className)
       td.classList.add('highlight')
 
+
+  # method @add_column(key, spec)
+  # 
   add_column: (key, spec) =>
     spec.key = key
     @columns[key] = spec
 
+
+  # method @handle_click()
+  # 
   handle_click: (column) =>
     defalt_order = @defaults[column]
     if defalt_order != 'none'
@@ -90,12 +109,22 @@ class Sortable_Table_Header
       classes = column.classes.concat(['column-heading'])
       th.setAttribute('class', classes.join(' '))
       th.innerText = column.heading_text
-      th.onclick = ((key)=> => @table.handle_click(key))(column.key)
+      th.onclick = @handle_click(column.key)
       if column.key != 'rank'
-        th.onmouseover = ((th)-> -> th.classList.add('mouseover'))(th)
-        th.onmouseout = ((th)-> -> th.classList.remove('mouseover'))(th)
+        th.onmouseover = @handle_mouseover(th)
+        th.onmouseout = @handle_mouseout(th)
       @tr.appendChild(th)
     @elt.appendChild(@tr)
+
+  handle_mouseover: (th) ->
+    -> th.classList.add('mouseover')
+      
+  handle_mouseout: (th) ->
+    -> th.classList.remove('mouseover')
+      
+  handle_click: (key) =>
+    => @table.handle_click(key)
+
 
 
 class Sortable_Table_Body
