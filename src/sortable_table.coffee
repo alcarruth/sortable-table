@@ -3,10 +3,8 @@
 
 deep = require('deep')
 
-console.log("sortable_table: document: #{document}")
 if window?
   document = window.document
-console.log("sortable_table: document: #{document}")
 
 normal_sort = (spec) ->
   {column, direction} = spec
@@ -35,6 +33,11 @@ class Sortable_Table
       column: null
       direction: null
 
+
+  # method @sort_data({ column, direction })
+  # column: the column to sort
+  # direction: either 'ascending' or 'descending'
+  # 
   sort_data: (spec) =>
     console.log("sort_data(#{spec})")
     data = await @data
@@ -45,7 +48,10 @@ class Sortable_Table
     @current_sort = spec
     @update()
 
+
+  # method @update()
   # creates and installs new table element
+  # 
   update: =>
     # create new <tbody> element from current data
     tbody = new Sortable_Table_Body(this)
@@ -53,6 +59,10 @@ class Sortable_Table
     @tbody = tbody
     @highlight(@current_sort.column)
 
+
+  # method @highlight()
+  # arg: key : column key
+  # 
   highlight: (key) =>
     className = key.replace(/_/g, '-')
     for th in @thead.elt.getElementsByClassName('column-heading')
@@ -60,10 +70,16 @@ class Sortable_Table
     for td in @elt.getElementsByClassName(className)
       td.classList.add('highlight')
 
+
+  # method @add_column(key, spec)
+  # 
   add_column: (key, spec) =>
     spec.key = key
     @columns[key] = spec
 
+
+  # method @handle_click()
+  # 
   handle_click: (column) =>
     defalt_order = @defaults[column]
     if defalt_order != 'none'
