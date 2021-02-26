@@ -1,6 +1,6 @@
 {
   "name": "sortable-table",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Easily create html tables with clickable column headers to sort the rows.",
   "main": "index.js",
   "scripts": {
