@@ -21,7 +21,7 @@
   "author": "Al Carruth",
   "license": "ISC",
   "dependencies": {
-    "deep": "https://github.com/alcarruth/deep.git#stable"
+    "deep": "git+https://github.com/alcarruth/deep.git#stable"
   },
   "devDependencies": {
     "browserify": "^16.5.1",

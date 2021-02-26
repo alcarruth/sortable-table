@@ -3,4 +3,5 @@ node_modules/
 build/
 bin/buildrc
 bin/settings.coffee
+browser/
 
